@@ -1,4 +1,4 @@
-const { default: makeWASocket, useSingleFileAuthState } = require('@adiwajshing/baileys');
+const { default: makeWASocket, useSingleFileAuthState, DisconnectReason } = require('@adiwajshing/baileys');
 const { Boom } = require('@hapi/boom');
 const fs = require('fs');
 const express = require('express');
@@ -13,9 +13,26 @@ async function startSock() {
     const sock = makeWASocket({
         auth: state,
         printQRInTerminal: true,
+        logger: { level: 'debug' }
     });
 
     sock.ev.on('creds.update', saveState);
+
+    sock.ev.on('connection.update', (update) => {
+        const { connection, lastDisconnect, qr } = update;
+        if (qr) {
+            console.log('✅ QR Code generated — scan now:');
+        }
+        if (connection === 'close') {
+            const shouldReconnect = (lastDisconnect.error = Boom)?.output?.statusCode !== DisconnectReason.loggedOut;
+            console.log('❌ Connection closed. Reconnecting...', lastDisconnect.error);
+            if (shouldReconnect) {
+                startSock();
+            }
+        } else if (connection === 'open') {
+            console.log('✅ Connected successfully to WhatsApp!');
+        }
+    });
 
     sock.ev.on('messages.upsert', async ({ messages }) => {
         const msg = messages[0];
