@@ -12,8 +12,7 @@ const { state, saveState } = useSingleFileAuthState('./session/auth_info.json');
 async function startSock() {
     const sock = makeWASocket({
         auth: state,
-        printQRInTerminal: true,
-        logger: { level: 'debug' }
+        printQRInTerminal: true
     });
 
     sock.ev.on('creds.update', saveState);
@@ -25,7 +24,7 @@ async function startSock() {
         }
         if (connection === 'close') {
             const shouldReconnect = (lastDisconnect.error = Boom)?.output?.statusCode !== DisconnectReason.loggedOut;
-            console.log('❌ Connection closed. Reconnecting...', lastDisconnect.error);
+            console.log('❌ Connection closed. Reconnecting...', lastDisconnect?.error?.message || '');
             if (shouldReconnect) {
                 startSock();
             }
