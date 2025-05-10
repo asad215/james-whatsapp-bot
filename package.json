@@ -1,17 +1,14 @@
 {
   "name": "james-whatsapp-bot",
   "version": "1.0.0",
-  "description": "WhatsApp Web Bot using Baileys v4.4.0 + GPT backend",
   "main": "server.js",
+  "type": "commonjs",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "@adiwajshing/baileys": "4.4.0",
-    "axios": "^1.6.7",
-    "express": "^4.18.2"
-  },
-  "engines": {
-    "node": ">=16.0.0"
+    "@adiwajshing/baileys": "^4.4.0",
+    "express": "^4.18.2",
+    "qrcode": "^1.5.3"
   }
 }
