@@ -2,13 +2,12 @@
   "name": "james-whatsapp-bot",
   "version": "1.0.0",
   "main": "server.js",
-  "type": "commonjs",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "@adiwajshing/baileys": "^4.4.0",
     "express": "^4.18.2",
-    "qrcode": "^1.5.3"
+    "body-parser": "^1.20.2",
+    "axios": "^1.5.0"
   }
 }
